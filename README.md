@@ -2,6 +2,8 @@
 
 Projeto da disciplina **Lógica e Matemática Discreta (2026/1)** — Insper.
 
+Aluno: Rafael Victor Lemos Ferreira.
+
 Construção de uma base de conhecimento em Prolog a partir de um dataset público de armas do jogo Terraria, com queries sofisticadas usando lógica de primeira ordem.
 
 ---
@@ -135,7 +137,7 @@ Técnicas usadas: `max_list`, `findall`, composição de predicados auxiliares (
 |---|---|
 | `classe(C)` | Define o domínio das 4 classes |
 | `dps_medio_global(Classe, Media)` | DPS médio de uma classe em todo o dataset |
-| `dps_medio_classe(Classe, Fase, Media)` | DPS médio de uma classe em uma fase específica |
+| `dps_medio_classe_progressao(Classe, Fase, Media)` | DPS médio de uma classe em uma fase específica |
 | `melhor_classe_na_fase(Fase, Classe, Media)` | Classe com maior DPS médio na fase |
 | `dps_maximo_na_fase(Classe, Fase, Max)` | Maior DPS de uma classe numa fase |
 | `melhor_arma_na_fase(Classe, Fase, Arma, DPS)` | Arma campeã de cada classe na fase |
