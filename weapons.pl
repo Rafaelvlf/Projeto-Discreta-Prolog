@@ -400,3 +400,57 @@ weapon(finch_staff, summoner, pre_boss, 10).
 weapon(flameburst_rod, summoner, pre_boss, 8).
 weapon(flinx_staff, summoner, pre_boss, 8).
 weapon(lightning_aura_rod, summoner, pre_boss, 8).
+
+progressao(Prog) :-
+    weapon(_,_,Prog,_).
+
+classe(Classe) :-
+    weapon(_,Classe,_,_).
+
+dps_medio_classe_progressao(Classe, Progressao, Media) :-
+    classe(Classe),
+    progressao(Progressao),
+    findall(DPS, weapon(_, Classe, Progressao, DPS), Lista),
+    Lista \= [],
+    sum_list(Lista, Soma),
+    length(Lista, N),
+    Media is Soma / N.
+
+melhor_classe_na_fase(Progressao, MelhorClasse, MelhorMedia) :-
+    dps_medio_classe_progressao(MelhorClasse, Progressao, MelhorMedia),
+    \+ (
+        dps_medio_classe_progressao(_, Progressao, OutraMedia),
+        OutraMedia > MelhorMedia
+    ).
+
+dps_medio_global(Classe, Media) :-
+    findall(DPS, weapon(_, Classe, _, DPS), Lista),
+    Lista \= [],
+    sum_list(Lista, Soma),
+    length(Lista, N),
+    Media is Soma / N.
+
+ranking_classes(Ranking) :-
+    setof(
+        Media-Classe,
+        (classe(Classe), dps_medio_global(Classe, Media)),
+        Crescente
+    ),
+    reverse(Crescente, Ranking).
+
+dps_maximo_na_fase(Classe, Fase, MaxDPS) :-
+    classe(Classe),
+    findall(DPS, weapon(_, Classe, Fase, DPS), Lista),
+    Lista \= [],
+    max_list(Lista, MaxDPS).
+
+melhor_arma_na_fase(Classe, Fase, Arma, MaxDPS) :-
+    dps_maximo_na_fase(Classe, Fase, MaxDPS),
+    weapon(Arma, Classe, Fase, MaxDPS).
+
+melhores_armas_por_fase(Fase, Resultado) :-
+    setof(
+        Classe-Arma-DPS,
+        melhor_arma_na_fase(Classe, Fase, Arma, DPS),
+        Resultado
+    ).
