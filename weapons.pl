@@ -423,6 +423,14 @@ melhor_classe_na_fase(Progressao, MelhorClasse, MelhorMedia) :-
         OutraMedia > MelhorMedia
     ).
 
+ranking_por_fase(Tabela) :-
+    setof(Prog, W^C^D^weapon(W, C, Prog, D), Fases),
+    maplist(fase_com_melhor_classe, Fases, Tabela).
+ 
+fase_com_melhor_classe(Fase, Fase-MelhorClasse-Media) :-
+    melhor_classe_na_fase(Fase, MelhorClasse, MediaExata),
+    Media is round(MediaExata).
+
 dps_medio_global(Classe, Media) :-
     findall(DPS, weapon(_, Classe, _, DPS), Lista),
     Lista \= [],
